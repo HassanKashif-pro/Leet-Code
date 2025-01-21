@@ -1,26 +1,30 @@
+#include <iostream>
 #include <vector>
+#include <algorithm>
+
 class Solution
 {
 public:
-    int search(vector<int> &nums, int target)
+    int firstMissingPositive(std::vector<int> &nums)
     {
-        int left = 0, right = nums.size() - 1;
-        while (left <= right)
+        std::sort(nums.begin(), nums.end()); // Sort the array
+        int missing = 1;
+
+        for (int num : nums)
         {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target)
+            if (num == missing)
             {
-                return mid;
-            }
-            else if (nums[mid] < target)
-            {
-                left = mid + 1;
-            }
-            else
-            {
-                right = mid - 1;
+                missing++; // Check next positive integer
             }
         }
-        return -1; // Target not found
+        return missing;
     }
 };
+
+int index()
+{
+    Solution sol;
+    std::vector<int> nums = {3, 4, -1, 1};
+    std::cout << "First missing positive: " << sol.firstMissingPositive(nums) << std::endl;
+    return 0;
+}
