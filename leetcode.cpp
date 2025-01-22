@@ -1,24 +1,21 @@
 class Solution
 {
 public:
-    int lengthOfLongestSubstring(string s)
+    double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
     {
-        int left = 0;
-        int maxLength = 0;
-        unordered_set<char> charSet;
+        vector<int> mergedArr = nums1;
+        mergedArr.insert(mergedArr.end(), nums2.begin(), nums2.end());
 
-        for (int right = 0; right < s.length(); right++)
+        sort(mergedArr.begin(), mergedArr.end());
+
+        int n = mergedArr.size();
+        if (n % 2 != 0)
         {
-            while (charSet.find(s[right]) != charSet.end())
-            {
-                charSet.erase(s[left]);
-                left++;
-            }
-
-            charSet.insert(s[right]);
-            maxLength = max(maxLength, right - left + 1);
+            return mergedArr[n / 2];
         }
-
-        return maxLength;
+        else
+        {
+            return (mergedArr[n / 2 - 1] + mergedArr[n / 2]) / 2.0;
+        }
     }
 };
