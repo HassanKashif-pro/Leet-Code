@@ -1,30 +1,24 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
 class Solution
 {
 public:
-    int firstMissingPositive(std::vector<int> &nums)
+    int lengthOfLongestSubstring(string s)
     {
-        std::sort(nums.begin(), nums.end()); // Sort the array
-        int missing = 1;
+        int left = 0;
+        int maxLength = 0;
+        unordered_set<char> charSet;
 
-        for (int num : nums)
+        for (int right = 0; right < s.length(); right++)
         {
-            if (num == missing)
+            while (charSet.find(s[right]) != charSet.end())
             {
-                missing++; // Check next positive integer
+                charSet.erase(s[left]);
+                left++;
             }
+
+            charSet.insert(s[right]);
+            maxLength = max(maxLength, right - left + 1);
         }
-        return missing;
+
+        return maxLength;
     }
 };
-
-int index()
-{
-    Solution sol;
-    std::vector<int> nums = {3, 4, -1, 1};
-    std::cout << "First missing positive: " << sol.firstMissingPositive(nums) << std::endl;
-    return 0;
-}
