@@ -1,54 +1,27 @@
-#include <iostream>
-#include <string>
-
 class Solution
 {
+#include <climits> // For INT_MAX and INT_MIN
 public:
-    std::string longestPalindrome(std::string s)
+    int reverse(int x)
     {
-        if (s.empty())
-            return "";
-
-        int start = 0, maxLength = 1;
-        int n = s.length();
-
-        for (int i = 0; i < n; i++)
+        int rev = 0;
+        while (x != 0)
         {
-            int left = i, right = i;
+            int digit = x % 10; // Extract the last digit
+            x /= 10;            // Remove the last digit
 
-            // Expand around center for odd-length palindromes
-            while (left >= 0 && right < n && s[left] == s[right])
+            // Check for overflow before adding the digit
+            if (rev > INT_MAX / 10 || (rev == INT_MAX / 10 && digit > 7))
             {
-                if (right - left + 1 > maxLength)
-                {
-                    start = left;
-                    maxLength = right - left + 1;
-                }
-                left--;
-                right++;
+                return 0; // Positive overflow
+            }
+            if (rev < INT_MIN / 10 || (rev == INT_MIN / 10 && digit < -8))
+            {
+                return 0; // Negative overflow
             }
 
-            // Expand around center for even-length palindromes
-            left = i, right = i + 1;
-            while (left >= 0 && right < n && s[left] == s[right])
-            {
-                if (right - left + 1 > maxLength)
-                {
-                    start = left;
-                    maxLength = right - left + 1;
-                }
-                left--;
-                right++;
-            }
+            rev = rev * 10 + digit; // Append the digit
         }
-
-        return s.substr(start, maxLength);
+        return rev;
     }
 };
-
-int index()
-{
-    std::string ret = Solution().longestPalindrome("racecar");
-    std::cout << "Longest Palindrome: " << ret << std::endl;
-    return 0;
-}
