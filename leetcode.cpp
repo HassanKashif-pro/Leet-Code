@@ -1,26 +1,24 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 class Solution
 {
 public:
-    int maxArea(vector<int> &height)
+    std::string longestCommonPrefix(std::vector<std::string> &strs)
     {
-        int left = 0;
-        int right = height.size() - 1;
-        int maxArea = 0;
 
-        while (left < right)
+        std::sort(strs.begin(), strs.end());
+
+        std::string first = strs[0];
+        std::string last = strs[strs.size() - 1];
+
+        int i = 0;
+        while (i < first.size() && first[i] == last[i])
         {
-            int currentHeight = min(height[left], height[right]);
-            maxArea = max(maxArea, (currentHeight * (right - left)));
-
-            if (currentHeight == height[left])
-            {
-                left++;
-            }
-            else
-            {
-                right--;
-            }
+            i++;
         }
-        return maxArea;
+
+        return first.substr(0, i);
     }
 };
