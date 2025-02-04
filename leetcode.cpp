@@ -1,24 +1,45 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
 class Solution
 {
 public:
-    std::string longestCommonPrefix(std::vector<std::string> &strs)
+    vector<vector<int>> threeSum(vector<int> &nums)
     {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
 
-        std::sort(strs.begin(), strs.end());
-
-        std::string first = strs[0];
-        std::string last = strs[strs.size() - 1];
-
-        int i = 0;
-        while (i < first.size() && first[i] == last[i])
+        for (int i = 0; i < nums.size(); i++)
         {
-            i++;
-        }
+            if (i > 0 && nums[i] == nums[i - 1])
+            {
+                continue;
+            }
 
-        return first.substr(0, i);
+            int j = i + 1;
+            int k = nums.size() - 1;
+
+            while (j < k)
+            {
+                int total = nums[i] + nums[j] + nums[k];
+
+                if (total > 0)
+                {
+                    k--;
+                }
+                else if (total < 0)
+                {
+                    j++;
+                }
+                else
+                {
+                    res.push_back({nums[i], nums[j], nums[k]});
+                    j++;
+
+                    while (nums[j] == nums[j - 1] && j < k)
+                    {
+                        j++;
+                    }
+                }
+            }
+        }
+        return res;
     }
 };
