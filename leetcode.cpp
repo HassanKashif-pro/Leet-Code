@@ -1,35 +1,39 @@
 class Solution
 {
 public:
-    vector<string> letterCombinations(string digits)
+    int trap(vector<int> &height)
     {
-        if (digits.empty())
-            return {}; // Edge case: empty input
+        int left = 0, right = height.size() - 1;
+        int leftMax = 0, rightMax = 0;
+        int totalWater = 0;
 
-        unordered_map<char, string> phoneMap = {
-            {'2', "abc"}, {'3', "def"}, {'4', "ghi"}, {'5', "jkl"}, {'6', "mno"}, {'7', "pqrs"}, {'8', "tuv"}, {'9', "wxyz"}};
-
-        vector<string> result;
-        string current;
-        backtrack(digits, 0, current, result, phoneMap);
-        return result;
-    }
-
-private:
-    void backtrack(const string &digits, int index, string &current, vector<string> &result, unordered_map<char, string> &phoneMap)
-    {
-        if (index == digits.size())
+        while (left < right)
         {
-            result.push_back(current); // Found a valid combination
-            return;
+            if (height[left] < height[right])
+            {
+                if (height[left] >= leftMax)
+                {
+                    leftMax = height[left];
+                }
+                else
+                {
+                    totalWater += leftMax - height[left];
+                }
+                left++;
+            }
+            else
+            {
+                if (height[right] >= rightMax)
+                {
+                    rightMax = height[right];
+                }
+                else
+                {
+                    totalWater += rightMax - height[right];
+                }
+                right--;
+            }
         }
-
-        string letters = phoneMap[digits[index]];
-        for (char letter : letters)
-        {
-            current.push_back(letter);                               // Choose a letter
-            backtrack(digits, index + 1, current, result, phoneMap); // Explore further
-            current.pop_back();                                      // Backtrack (remove last choice)
-        }
+        return totalWater;
     }
 };
