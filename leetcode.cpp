@@ -1,39 +1,34 @@
 class Solution
 {
 public:
-    int trap(vector<int> &height)
+    bool isValid(string s)
     {
-        int left = 0, right = height.size() - 1;
-        int leftMax = 0, rightMax = 0;
-        int totalWater = 0;
-
-        while (left < right)
+        stack<char> st;
+        for (char c : s)
         {
-            if (height[left] < height[right])
+            if (c == '(' || c == '{' || c == '[')
             {
-                if (height[left] >= leftMax)
-                {
-                    leftMax = height[left];
-                }
-                else
-                {
-                    totalWater += leftMax - height[left];
-                }
-                left++;
+                st.push(c); //
             }
             else
             {
-                if (height[right] >= rightMax)
+                if (st.empty())
+                    return false;
+
+                char top = st.top();
+                if ((c == ')' && top == '(') ||
+                    (c == '}' && top == '{') ||
+                    (c == ']' && top == '['))
                 {
-                    rightMax = height[right];
+                    st.pop();
                 }
                 else
                 {
-                    totalWater += rightMax - height[right];
+                    return false;
                 }
-                right--;
             }
         }
-        return totalWater;
+
+        return st.empty();
     }
 };
