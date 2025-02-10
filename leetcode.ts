@@ -1,11 +1,5 @@
-function maxProfit(prices: number[]): number {
-  let minPrice = Infinity;
-  let maxProfit = 0;
+function isPalindrome(s: string): boolean {
+  const cleanStr = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 
-  for (let price of prices) {
-      minPrice = Math.min(minPrice, price);
-      maxProfit = Math.max(maxProfit, price - minPrice); 
-  }
-
-  return maxProfit;
+  return cleanStr === cleanStr.split("").reverse().join("");
 }
