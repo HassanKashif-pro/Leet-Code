@@ -1,5 +1,18 @@
-function isPalindrome(s: string): boolean {
-  const cleanStr = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+class TreeNode {
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+}
 
-  return cleanStr === cleanStr.split("").reverse().join("");
+function invertTree(root: TreeNode | null): TreeNode | null {
+  if (!root) return null;
+
+  let temp = root.left;
+  root.left = root.right;
+  root.right = temp;
+
+  invertTree(root.right);
+  invertTree(root.left);
+
+  return root;
 }
