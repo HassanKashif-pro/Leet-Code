@@ -1,17 +1,25 @@
-class TreeNode {
+class ListNode {
   val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
+  next: ListNode | null;
 
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+  constructor(val?: number, next?: ListNode | null) {
     this.val = val ?? 0;
-    this.left = left ?? null;
-    this.right = right ?? null;
+    this.next = next ?? null;
   }
 }
 
-function maxDepth(root: TreeNode | null): number {
-  if (!root) return 0;
+function hasCycle(head: ListNode | null): boolean {
+  let slow = head;
+  let fast = head;
 
-  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+  while (fast !== null && fast.next !== null) {
+    slow = slow!.next;
+    fast = fast.next.next;
+
+    if (slow === fast) {
+      return true;
+    }
+  }
+
+  return false;
 }
