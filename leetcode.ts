@@ -1,23 +1,19 @@
-class ListNode {
-  val: number;
-  next: ListNode | null;
+function majorityElement(nums: number[]): number {
+  let candidate = nums[0],
+    count = 1;
 
-  constructor(val?: number, next?: ListNode | null) {
-    this.val = val ?? 0;
-    this.next = next ?? null;
-  }
-}
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === candidate) {
+      count++;
+    } else {
+      count--;
+    }
 
-function reverseList(head: ListNode | null): ListNode | null {
-  let prev: ListNode | null = null;
-  let current = head;
-
-  while (current !== null) {
-    let nextNode = current.next; // Store next node
-    current.next = prev; // Reverse the pointer
-    prev = current; // Move prev forward
-    current = nextNode; // Move current forward
+    if (count === 0) {
+      candidate = nums[i];
+      count = 1;
+    }
   }
 
-  return prev; // New head of the reversed list
+  return candidate;
 }
