@@ -1,19 +1,14 @@
-function majorityElement(nums: number[]): number {
-  let candidate = nums[0],
-    count = 1;
+function missingNumber(nums: number[]): number {
+  let s = nums.length;
+  let n = nums.sort((a, b) => a - b);
 
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] === candidate) {
-      count++;
-    } else {
-      count--;
+  for (let i = 0; i < s; i++) {
+    if (nums[0] !== 0) {
+      return 0;
     }
-
-    if (count === 0) {
-      candidate = nums[i];
-      count = 1;
+    if (nums[i + 1] !== nums[i] + 1) {
+      return nums[i] + 1;
     }
   }
-
-  return candidate;
+  return undefined;
 }
