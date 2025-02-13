@@ -1,14 +1,13 @@
-function missingNumber(nums: number[]): number {
-  let s = nums.length;
-  let n = nums.sort((a, b) => a - b);
+/**
+ Do not return anything, modify s in-place instead.
+ */
+function reverseString(s: string[]): void {
+  let left = 0;
+  let right = s.length - 1;
 
-  for (let i = 0; i < s; i++) {
-    if (nums[0] !== 0) {
-      return 0;
-    }
-    if (nums[i + 1] !== nums[i] + 1) {
-      return nums[i] + 1;
-    }
+  while (left < right) {
+    [s[left], s[right]] = [s[right], s[left]];
+    left++;
+    right--;
   }
-  return undefined;
 }
