@@ -1,28 +1,19 @@
-class TreeNode {
+class ListNode {
   val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+  next: ListNode | null;
+  constructor(val?: number, next?: ListNode | null) {
     this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
+    this.next = next === undefined ? null : next;
   }
 }
 
-function diameterOfBinaryTree(root: TreeNode | null): number {
-  let maxDepth = 0;
+function middleNode(head: ListNode | null): ListNode | null {
+  let slow = head;
+  let fast = head;
 
-  function depth(node: TreeNode | null): number {
-    if (!node) return 0;
-
-    let leftDepth = depth(node.left);
-    let rightDepth = depth(node.right);
-
-    maxDepth = Math.max(maxDepth, leftDepth + rightDepth);
-
-    return Math.max(leftDepth, rightDepth) + 1;
+  while (fast !== null && fast.next !== null) {
+    slow = slow!.next;
+    fast = fast.next.next;
   }
-
-  depth(root);
-  return maxDepth;
+  return slow;
 }
