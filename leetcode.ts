@@ -1,19 +1,9 @@
-class ListNode {
-  val: number;
-  next: ListNode | null;
-  constructor(val?: number, next?: ListNode | null) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
+function maxSubArray(nums: number[]): number {
+  let maxSum = -Infinity;
+  let currentSum = 0;
+  for (let i = 0; i < nums.length; i++) {
+    currentSum = Math.max(nums[i], currentSum + nums[i]);
+    maxSum = Math.max(currentSum, maxSum);
   }
-}
-
-function middleNode(head: ListNode | null): ListNode | null {
-  let slow = head;
-  let fast = head;
-
-  while (fast !== null && fast.next !== null) {
-    slow = slow!.next;
-    fast = fast.next.next;
-  }
-  return slow;
+  return maxSum;
 }
