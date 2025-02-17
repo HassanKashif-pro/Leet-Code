@@ -1,9 +1,10 @@
-function maxSubArray(nums: number[]): number {
-  let maxSum = -Infinity;
-  let currentSum = 0;
-  for (let i = 0; i < nums.length; i++) {
-    currentSum = Math.max(nums[i], currentSum + nums[i]);
-    maxSum = Math.max(currentSum, maxSum);
+function searchMatrix(matrix: number[][], target: number): boolean {
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (matrix[i][j] === target) {
+        return true;
+      }
+    }
   }
-  return maxSum;
+  return false;
 }
