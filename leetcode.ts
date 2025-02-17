@@ -1,10 +1,9 @@
-function searchMatrix(matrix: number[][], target: number): boolean {
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-      if (matrix[i][j] === target) {
-        return true;
-      }
+function findMin(nums: number[]): number {
+  const minValue = Math.min(...nums);
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === minValue) {
+      let rotations = nums[i];
     }
   }
-  return false;
+  return minValue;
 }
