@@ -1,9 +1,8 @@
-function findMin(nums: number[]): number {
-  const minValue = Math.min(...nums);
+function search(nums: number[], target: number): number {
   for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === minValue) {
-      let rotations = nums[i];
+    if (nums[i] === target) {
+      return i;
     }
   }
-  return minValue;
+  return -1;
 }
