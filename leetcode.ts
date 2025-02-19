@@ -1,67 +1,45 @@
-class HashMap<K, V> {
-  private storage: Array<[K, V][]>; // Array of key-value pairs (for handling collisions)
-  private size: number;
+function minWindow(s: string, t: string): string {
+    if (t.length > s.length) return ""; // Edge case
 
-  constructor(size: number = 10) {
-    this.size = size;
-    this.storage = new Array(size);
-  }
+    let l = 0;
+    let minStart = 0;
+    let minLength = Infinity;
+    let charCount = new Map<string, number>();
 
-  // Hash function to generate an index
-  private hash(key: K): number {
-    let hash = 0;
-    const keyString = String(key); // Convert key to string
-    for (let i = 0; i < keyString.length; i++) {
-      hash += keyString.charCodeAt(i);
+    // Store frequency of characters in t
+    for (let char of t) {
+        charCount.set(char, (charCount.get(char) || 0) + 1);
     }
-    return hash % this.size;
-  }
 
-  // Insert key-value pair
-  set(key: K, value: V): void {
-    const index = this.hash(key);
-    if (!this.storage[index]) {
-      this.storage[index] = [];
-    }
-    // Check if key already exists and update
-    for (let pair of this.storage[index]) {
-      if (pair[0] === key) {
-        pair[1] = value;
-        return;
-      }
-    }
-    this.storage[index].push([key, value]);
-  }
+    let required = charCount.size; // Number of unique characters required
+    let formed = 0;
+    let windowCount = new Map<string, number>();
 
-  // Retrieve value by key
-  get(key: K): V | undefined {
-    const index = this.hash(key);
-    if (!this.storage[index]) return undefined;
-    for (let pair of this.storage[index]) {
-      if (pair[0] === key) {
-        return pair[1];
-      }
-    }
-    return undefined;
-  }
+    for (let r = 0; r < s.length; r++) {
+        let char = s[r];
+        windowCount.set(char, (windowCount.get(char) || 0) + 1);
 
-  // Delete key-value pair
-  delete(key: K): void {
-    const index = this.hash(key);
-    if (!this.storage[index]) return;
-    this.storage[index] = this.storage[index].filter(pair => pair[0] !== key);
-  }
+        if (charCount.has(char) && windowCount.get(char) === charCount.get(char)) {
+            formed++; // One required character fully matched
+        }
+
+        // Shrink the window when all characters are present
+        while (formed === required) {
+            if (r - l + 1 < minLength) {
+                minLength = r - l + 1;
+                minStart = l;
+            }
+
+            let leftChar = s[l];
+            windowCount.set(leftChar, windowCount.get(leftChar)! - 1);
+
+            if (charCount.has(leftChar) && windowCount.get(leftChar)! < charCount.get(leftChar)!) {
+                formed--; // A required character is now missing
+            }
+
+            l++; // Move the left pointer
+        }
+    }
+
+    return minLength === Infinity ? "" : s.substring(minStart, minStart + minLength);
 }
-
-// Usage example
-const map = new HashMap<string, number>();
-map.set("age", 25);
-map.set("height", 175);
-map.set("weight", 70);
-
-console.log(map.get("age"));    // Output: 25
-console.log(map.get("height")); // Output: 175
-console.log(map.get("weight")); // Output: 70
-
-map.delete("age");
-console.log(map.get("age")); // Output: undefined
