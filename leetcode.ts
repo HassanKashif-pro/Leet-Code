@@ -1,34 +1,65 @@
 class Node {
+  key: number;
   val: number;
+  prev: Node | null;
   next: Node | null;
-  random: Node | null;
 
-  constructor(val?: number, next?: Node | null, random?: Node | null) {
-    this.val = val ?? 0;
-    this.next = next ?? null;
-    this.random = random ?? null;
+  constructor(key: number, val: number) {
+    this.key = key;
+    this.val = val;
+    this.prev = null;
+    this.next = null;
   }
 }
 
-function copyRandomList(head: Node | null): Node | null {
-  if (!head) return null;
+class LRUCache {
+  private capacity: number;
+  private cache: Map<number, Node>;
+  private left: Node; // LRU (Least Recently Used)
+  private right: Node; // MRU (Most Recently Used)
 
-  let map = new Map<Node, Node>();
-  let curr: Node | null = head;
+  constructor(capacity: number) {
+    this.capacity = capacity;
+    this.cache = new Map();
 
-  // First pass: Create a copy of each node and store it in the map
-  while (curr) {
-    map.set(curr, new Node(curr.val));
-    curr = curr.next;
+    this.left = new Node(0, 0);
+    this.right = new Node(0, 0);
+    this.left.next = this.right;
+    this.right.prev = this.left;
   }
 
-  // Second pass: Set the next and random pointers
-  curr = head;
-  while (curr) {
-    map.get(curr)!.next = map.get(curr.next) || null;
-    map.get(curr)!.random = map.get(curr.random) || null;
-    curr = curr.next;
+  private remove(node: Node): void {
+    node.prev!.next = node.next;
+    node.next!.prev = node.prev;
   }
 
-  return map.get(head) || null;
+  private insert(node: Node): void {
+    node.prev = this.right.prev;
+    node.next = this.right;
+    this.right.prev!.next = node;
+    this.right.prev = node;
+  }
+
+  get(key: number): number {
+    if (!this.cache.has(key)) return -1;
+    const node = this.cache.get(key)!;
+    this.remove(node);
+    this.insert(node);
+    return node.val;
+  }
+
+  put(key: number, value: number): void {
+    if (this.cache.has(key)) {
+      this.remove(this.cache.get(key)!);
+    }
+    const newNode = new Node(key, value);
+    this.cache.set(key, newNode);
+    this.insert(newNode);
+
+    if (this.cache.size > this.capacity) {
+      const lru = this.left.next!;
+      this.remove(lru);
+      this.cache.delete(lru.key);
+    }
+  }
 }
