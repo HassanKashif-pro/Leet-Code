@@ -10,23 +10,13 @@ class TreeNode {
   }
 }
 
-function isBalanced(root: TreeNode | null): boolean {
-  function checkHeight(node: TreeNode | null): number {
-    if (!node) return 0; // Base case: empty tree has height 0
+function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  // Base case: if both nodes are null, they are the same
+  if (!p && !q) return true;
 
-    let leftHeight = checkHeight(node.left);
-    let rightHeight = checkHeight(node.right);
+  // If one is null but the other is not, or values are different, return false
+  if (!p || !q || p.val !== q.val) return false;
 
-    if (
-      leftHeight === -1 ||
-      rightHeight === -1 ||
-      Math.abs(leftHeight - rightHeight) > 1
-    ) {
-      return -1; // Found imbalance
-    }
-
-    return 1 + Math.max(leftHeight, rightHeight);
-  }
-
-  return checkHeight(root) !== -1;
+  // Recursively check left and right subtrees
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 }
