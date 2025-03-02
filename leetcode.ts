@@ -1,22 +1,17 @@
-class TreeNode {
-  val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
+function isIdentical(tree1: TreeNode | null, tree2: TreeNode | null): boolean {
+  if (!tree1 && !tree2) return true;
+  if (!tree1 || !tree2 || tree1.val !== tree2.val) return false;
 
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-    this.val = val ?? 0;
-    this.left = left ?? null;
-    this.right = right ?? null;
-  }
+  return (
+    isIdentical(tree1.left, tree2.left) && isIdentical(tree1.right, tree2.right)
+  );
 }
 
-function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
-  // Base case: if both nodes are null, they are the same
-  if (!p && !q) return true;
+function isSubtree(T1: TreeNode | null, T2: TreeNode | null): boolean {
+  if (!T2) return true;
+  if (!T1) return false;
 
-  // If one is null but the other is not, or values are different, return false
-  if (!p || !q || p.val !== q.val) return false;
+  if (isIdentical(T1, T2)) return true;
 
-  // Recursively check left and right subtrees
-  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+  return isSubtree(T1.left, T2) || isSubtree(T1.right, T2);
 }
