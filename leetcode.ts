@@ -1,20 +1,25 @@
-function lowestCommonAncestor(
-  root: TreeNode | null,
-  p: TreeNode | null,
-  q: TreeNode | null
-): TreeNode | null {
-  if (!root) return null;
+function levelOrder(root: TreeNode | null): number[][] {
+  if (!root) return [];
 
-  // If either p or q matches the root, return root
-  if (root === p || root === q) return root;
+  let result: number[][] = []; // This is 2D array for the result
+  let queue: TreeNode[] = [root]; // This is how you initalize a queue with the first element being root
 
-  // Search left and right subtrees
-  let left = lowestCommonAncestor(root.left, p, q);
-  let right = lowestCommonAncestor(root.right, p, q);
+  while (queue.length > 0) {
+    let levelSize = queue.length; // This size of this level is the length of the queue for now(before it gets shifted())
+    let level: number[] = []; // Temporary variable array to store all the numbers of the level
 
-  // If both left and right are not null, root is LCA
-  if (left && right) return root;
+    for (let i = 0; i < levelSize; i++) {
+      let node = queue.shift()!; // This will reset the whole queue to start fresh for the new lvl
 
-  // Otherwise, return the non-null side (either left or right)
-  return left ? left : right;
+      level.push(node.val); // This will puch the values of the nodes into the level variable
+
+      // These will store the right and left children if any into the queue.
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+
+    result.push(level);
+  }
+
+  return result;
 }
