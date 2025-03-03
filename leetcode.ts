@@ -1,17 +1,20 @@
-function isIdentical(tree1: TreeNode | null, tree2: TreeNode | null): boolean {
-  if (!tree1 && !tree2) return true;
-  if (!tree1 || !tree2 || tree1.val !== tree2.val) return false;
+function lowestCommonAncestor(
+  root: TreeNode | null,
+  p: TreeNode | null,
+  q: TreeNode | null
+): TreeNode | null {
+  if (!root) return null;
 
-  return (
-    isIdentical(tree1.left, tree2.left) && isIdentical(tree1.right, tree2.right)
-  );
-}
+  // If either p or q matches the root, return root
+  if (root === p || root === q) return root;
 
-function isSubtree(T1: TreeNode | null, T2: TreeNode | null): boolean {
-  if (!T2) return true;
-  if (!T1) return false;
+  // Search left and right subtrees
+  let left = lowestCommonAncestor(root.left, p, q);
+  let right = lowestCommonAncestor(root.right, p, q);
 
-  if (isIdentical(T1, T2)) return true;
+  // If both left and right are not null, root is LCA
+  if (left && right) return root;
 
-  return isSubtree(T1.left, T2) || isSubtree(T1.right, T2);
+  // Otherwise, return the non-null side (either left or right)
+  return left ? left : right;
 }
